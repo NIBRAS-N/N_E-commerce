@@ -16,4 +16,12 @@ type controllerType = (
     next: NextFunction
 )=> Promise<void | Response<any, Record<string, any>>>
 
-export {newUserReqBody , controllerType}
+
+interface NewProductRequestBody {
+    name: string;
+    category: string;
+    price: number;
+    stock: number;
+}
+  
+export {newUserReqBody , controllerType , NewProductRequestBody}

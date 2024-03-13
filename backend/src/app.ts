@@ -22,7 +22,7 @@ app.use(cookieParser())
 
 
 import userRoute from "./routes/user.routes.js";
-
+import productRoute from "./routes/products.routes.js"
 
 
 
@@ -35,7 +35,12 @@ app.get("/",(req,res)=>{
 
 app.use("/api/v1/user", userRoute);
 
+app.use("/api/v1/product",productRoute);
 
+
+
+
+app.use("/uploads", express.static("./public/temp"));
 app.use(errorMiddleware);
 
 

@@ -33,7 +33,7 @@ const newUser = asyncHandler ( async(
             _id,
             dob : new Date(dob)
         })
-
+        
         return res.status(200).json(new ApiResponse(200,user,`All ok , Congratulation, ${user.name} is created`));
     }
 )
@@ -52,7 +52,7 @@ const getUser = asyncHandler(async (req, res, next) => {
     const user = await User.findById(id);
   
     if (!user) return next(new ApiError(400,"Invalid Id", false));
-  
+    console.log(user.age);
     return res.status(200).json(new ApiResponse(200,user,`user ${user.name} found`));
 });
 
