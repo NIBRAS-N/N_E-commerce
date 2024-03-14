@@ -23,5 +23,27 @@ interface NewProductRequestBody {
     price: number;
     stock: number;
 }
+type SearchRequestQuery = {
+    search?: string;
+    price?: string;
+    category?: string;
+    sort?: string;
+    page?: string;
+};
   
-export {newUserReqBody , controllerType , NewProductRequestBody}
+interface   BaseQuery {
+    name?: {
+      $regex: string;
+      $options: string;
+    };
+    price?: { $lte: number };
+    category?: string;
+}
+
+type invalidateCatcheProps = {
+    product?: boolean;
+    order?: boolean;
+    admin?: boolean;
+    productId?: string | string[];
+}
+export {newUserReqBody , controllerType , NewProductRequestBody , SearchRequestQuery , BaseQuery,invalidateCatcheProps}

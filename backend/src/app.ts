@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import { errorMiddleware } from "./middlewares/error.middleware.js";
-
+import NodeCache from "node-cache";
 
 const app = express();
 
@@ -25,7 +25,7 @@ import userRoute from "./routes/user.routes.js";
 import productRoute from "./routes/products.routes.js"
 
 
-
+export const myCache = new NodeCache();
 
 //route direction
 
@@ -40,7 +40,7 @@ app.use("/api/v1/product",productRoute);
 
 
 
-app.use("/uploads", express.static("./public/temp"));
+app.use("/uploads", express.static("/public/temp"));
 app.use(errorMiddleware);
 
 
