@@ -45,5 +45,33 @@ type invalidateCatcheProps = {
     order?: boolean;
     admin?: boolean;
     productId?: string | string[];
+    userId?: string;    
+    orderId?: string;  
 }
-export {newUserReqBody , controllerType , NewProductRequestBody , SearchRequestQuery , BaseQuery,invalidateCatcheProps}
+
+type OrderItemType = {
+    name: string;
+    photo: string;
+    price: number;
+    quantity: number;
+    productId: string;
+};
+type ShippingInfoType = {
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    pinCode: number;
+  };
+
+interface NewOrderRequestBody {
+    shippingInfo: ShippingInfoType;
+    user: string;
+    subtotal: number;
+    tax: number;
+    shippingCharges: number;
+    discount: number;
+    total: number;
+    orderItems: OrderItemType[];
+}
+export {newUserReqBody , controllerType , NewProductRequestBody , SearchRequestQuery , BaseQuery,invalidateCatcheProps , OrderItemType , ShippingInfoType, NewOrderRequestBody}
