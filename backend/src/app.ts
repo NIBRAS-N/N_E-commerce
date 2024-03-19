@@ -26,6 +26,7 @@ import userRoute from "./routes/user.routes.js";
 import productRoute from "./routes/products.routes.js"
 import orderRoute from "./routes/order.routes.js"
 import couponRoute from "./routes/paymant-coupon.routes.js"
+import statRoute from "./routes/stats.routes.js"
 export const myCache = new NodeCache();
 
 //route direction
@@ -42,7 +43,7 @@ app.use("/api/v1/order",orderRoute);
 
 app.use("/api/v1/payment",couponRoute);
 
-
+app.use("/api/v1/stats",statRoute);
 app.use("/uploads", express.static("/public/temp"));
 app.use(errorMiddleware);
 

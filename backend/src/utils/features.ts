@@ -46,4 +46,34 @@ const reduceStock = async (orderItems:OrderItemType[]) => {
         await product.save({validateBeforeSave:false});
     }
 }
-export {invalidateCache,reduceStock}
+
+const calculatePercentage = (thisMonth:number,previousMonth:number)=>{
+    if(previousMonth===0) return thisMonth*100;
+    const percent= (thisMonth/previousMonth)*100;
+    return Number(percent.toFixed(0));
+}
+
+const getInventories = async({categories,productsCount}:{
+    categories:string[];
+    productsCount:number;
+})=>{
+    console.log(categories);
+    const categoriesCountPromise = categories.map((category)=>
+        Product.countDocuments({category})
+    )
+
+    const categoriesCount= await Promise.all(categoriesCountPromise);
+    
+    
+    console.log(categoriesCount);       
+    const countingCategory : Record<string,number>[] = [];
+
+    categories.forEach((category, i) => {
+        countingCategory.push({
+          [category]: Math.round((Number(categoriesCount[i]) / productsCount) * 100)
+        });
+    });
+    
+      return countingCategory;
+}
+export {invalidateCache , reduceStock , calculatePercentage , getInventories}
