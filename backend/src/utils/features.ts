@@ -3,6 +3,7 @@ import { Product } from "../models/products.model.js";
 import { OrderItemType, invalidateCatcheProps } from "../types/types.js"
 import { myCache } from "../app.js";
 import { ApiError } from "./apiError.js";
+import { ObjectId } from "mongoose";
 
 const invalidateCache = async({product,order,admin,productId,userId,orderId}:invalidateCatcheProps) => {
     if(product){
@@ -34,6 +35,15 @@ const invalidateCache = async({product,order,admin,productId,userId,orderId}:inv
     
         myCache.del(ordersKeys);
     }
+
+    if (admin) {
+        myCache.del([
+          "admin-stats",
+          "admin-pie-charts",
+          "admin-bar-charts",
+          "admin-line-charts",
+        ]);
+    }
 }
 
 const reduceStock = async (orderItems:OrderItemType[]) => {
@@ -57,7 +67,7 @@ const getInventories = async({categories,productsCount}:{
     categories:string[];
     productsCount:number;
 })=>{
-    console.log(categories);
+    // console.log(categories);
     const categoriesCountPromise = categories.map((category)=>
         Product.countDocuments({category})
     )
@@ -65,7 +75,7 @@ const getInventories = async({categories,productsCount}:{
     const categoriesCount= await Promise.all(categoriesCountPromise);
     
     
-    console.log(categoriesCount);       
+    // console.log(categoriesCount);       
     const countingCategory : Record<string,number>[] = [];
 
     categories.forEach((category, i) => {
@@ -76,4 +86,31 @@ const getInventories = async({categories,productsCount}:{
     
       return countingCategory;
 }
-export {invalidateCache , reduceStock , calculatePercentage , getInventories}
+
+interface myDocument extends Document{
+    _id?:string;
+    createdAt: Date;
+    discount?: number;
+    total?: number;
+}
+type funcProp = {
+    length:number;
+    docArr:myDocument[];
+    today:Date;
+    property?:"discount"|"total";
+}
+const getChartData = ({length,docArr,today,property}:funcProp) =>{
+    const arr:number[]=new Array(length).fill(0);
+    console.log(docArr[0]._id);
+    docArr.forEach((i)=>{
+        const monthDiff = (today.getMonth() - i.createdAt.getMonth() + 12)%12;
+
+        if(monthDiff<length){
+            if(property)arr[length-monthDiff-1]=i[property]!;
+            else arr[length-monthDiff-1]+=1;
+        }
+    })
+
+    return arr;
+}
+export {invalidateCache , reduceStock , calculatePercentage , getInventories ,getChartData,myDocument}

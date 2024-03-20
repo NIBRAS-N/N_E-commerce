@@ -8,4 +8,4 @@ router.route("/pie").get(checkAdmin,getPieCharts);
 router.route("/bar").get(checkAdmin,getBarCharts);
 router.route("/line").get(checkAdmin,getLineCharts);
 
-export default router;    
+export default router;  
