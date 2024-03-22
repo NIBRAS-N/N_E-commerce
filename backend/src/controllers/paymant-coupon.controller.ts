@@ -2,6 +2,23 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asynchandler.js";
 import { Coupon } from "../models/coupon.model.js";
+import { stripe } from "../app.js";
+
+const createPaymentIntent = asyncHandler(async (req, res, next) => {
+  const { amount } = req.body;
+
+  if (!amount) return next(new ApiError(400,"Please enter amount", false));
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: Number(amount) * 100,
+    currency: "inr",
+  });
+
+  return res.status(201).json(new ApiResponse(201,{ClientSecret: paymentIntent.client_secret},"payment done"));
+});
+
+
+
 
 const newCoupon = asyncHandler(async (req, res, next) => {
     const { coupon, amount } = req.body;
@@ -43,4 +60,4 @@ const deleteCoupon = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json(new ApiResponse(200,coupon,`Coupon ${coupon.code} deleted`));
 });
-export {newCoupon , applyDiscount , allCoupons , deleteCoupon}
+export {newCoupon , applyDiscount , allCoupons , deleteCoupon , createPaymentIntent}

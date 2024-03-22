@@ -4,6 +4,7 @@ import cors from "cors"
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import NodeCache from "node-cache";
 import morgan from "morgan";
+import Stripe from "stripe";
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(cors({
     credentials:true
 }
 ))
+
+const stripeKey = process.env.STRIPE_KEY || "";
+
 app.use(express.json({limit:"16kb"}))
 app.use(express.urlencoded({extended:true,limit:"16kb"}));
 app.use(express.static("public"))
@@ -27,6 +31,8 @@ import productRoute from "./routes/products.routes.js"
 import orderRoute from "./routes/order.routes.js"
 import couponRoute from "./routes/paymant-coupon.routes.js"
 import statRoute from "./routes/stats.routes.js"
+
+export const stripe = new Stripe(stripeKey);
 export const myCache = new NodeCache();
 
 //route direction

@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { newCoupon , applyDiscount, allCoupons, deleteCoupon } from "../controllers/paymant-coupon.controller.js";
+import { newCoupon , applyDiscount, allCoupons, deleteCoupon , createPaymentIntent} from "../controllers/paymant-coupon.controller.js";
 import { checkAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 
+router.route("/create").post(createPaymentIntent)
 router.route("/discount").get(applyDiscount)
 
 router.route("/coupon/new").post(checkAdmin,newCoupon)
