@@ -14,7 +14,9 @@
     text-decoration: none;
     color: black;
   }
-  
+$color1: white;
+$color2: rgb(46, 46, 46);
+$color3: rgb(0, 104, 136);
   .red {
     color: red;
   }
@@ -25,14 +27,54 @@
     color: rgb(0, 195, 0);
   }
   
-  @import "admin-styles/mixin";
+@import "admin-styles/mixin";
+
+@import "_home.scss";
+@import "_cart.scss";
+
+@import "admin-styles/dashboard";
+@import "admin-styles/products";
+@import "admin-styles/chart";
+@import "admin-styles/dashboardapp";
+@import "admin-styles/mediaquery";
   
-  @import "admin-styles/dashboard";
-  @import "admin-styles/products";
-  @import "admin-styles/chart";
-  @import "admin-styles/dashboardapp";
-  @import "admin-styles/mediaquery";
+
+.header {
+    @include flex(row, flex-end, stretch, 1.2rem);
+    padding: 1rem;
+    a {
+      color: $color2;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
   
+      &:hover {
+        color: $color3;
+      }
+    }
+  
+    button {
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      background-color: transparent;
+      &:hover {
+        color: $color3;
+    }
+  }
+  dialog {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100px;
+    position: absolute;
+    left: calc(100% - 100px);
+    top: 9%;
+    > div {
+      @include flex(column, flex-start, center, 0.25rem);
+    }
+  }
+}
+
   .admin-container {
     @include grid(1fr 4fr, 2rem);
     height: 100vh;
@@ -207,4 +249,3 @@
       transform: translate(-50%, -20%);
     }
   }
-  
